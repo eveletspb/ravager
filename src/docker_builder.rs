@@ -1,17 +1,12 @@
 use crate::common::print_message;
 use crate::finder::find;
-use std::fs::{self, ReadDir};
+use std::fs::{self};
 use std::io;
 use std::path::PathBuf;
 use std::time::Duration;
 
 const DOCKER_FILE: &str = "Dockerfile";
 const DELAY: Duration = Duration::from_millis(7);
-// load current diretorory from filesystem
-pub fn get_directory() -> ReadDir {
-    let dir = ".";
-    fs::read_dir(dir).unwrap_or_else(|e| panic!("{}", e))
-}
 
 fn user_input(options: usize) -> i32 {
     let mut input = String::new();
@@ -37,8 +32,9 @@ fn user_input(options: usize) -> i32 {
 }
 
 pub fn process() {
-    let dir = get_directory();
-    let docker_files = find(dir, DOCKER_FILE, Vec::new());
+    // let dir = get_directory();
+    // let docker_files = find(dir, DOCKER_FILE, Vec::new());
+    let docker_files = find(".", DOCKER_FILE);
 
     match docker_files.len() {
         0 => NotFoundDockerAction {}.action(),
